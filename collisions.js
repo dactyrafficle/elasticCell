@@ -94,5 +94,5 @@ function recalcMomentumAfterCollision(b1, b2) {
     b2.vx = v4x;
     b2.vy = v4y;
   
-	}
+  }
 }

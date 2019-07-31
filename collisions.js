@@ -41,12 +41,12 @@ function recalcMomentumAfterCollision(b1, b2) {
 
     // 1. get the normal vector, N, that represents the line of collision
     let N = {
-			'x': b1.x - b2.x,
-			'y': b1.y - b2.y,
-			'mag': function() {
-			  return Math.sqrt(this.x*this.x + this.y*this.y);
-		  }
-		}
+      'x': b1.x - b2.x,
+      'y': b1.y - b2.y,
+      'mag': function() {
+        return Math.sqrt(this.x*this.x + this.y*this.y);
+      }
+    }
 
     // 1b. reposition b1 so that it is exactly rho units away from b2 in the direction of the line of collision, N
     b1.x = b2.x + (N.x/N.mag())*rho;
@@ -63,10 +63,10 @@ function recalcMomentumAfterCollision(b1, b2) {
     let projV1onN = proj12(b1.vx, b1.vy, N.x, N.y);
     let projV2onN = proj12(b2.vx, b2.vy, N.x, N.y);
 		
-		// 3. calculate the head on collision - break it up into x- and y-collisions since this is alone N
+    // 3. calculate the head on collision - break it up into x- and y-collisions since this is alone N
 
-		// in: m1, v1x, v1y, m2, v2x, v2y (basically, mass + 2 vectors in)
-		// out: v3x, v3y, v4x, v4y (2 vectors out)
+    // in: m1, v1x, v1y, m2, v2x, v2y (basically, mass + 2 vectors in)
+    // out: v3x, v3y, v4x, v4y (2 vectors out)
 		
     let v3_normalX = headOnCollision(b1.m, projV1onN.x, b2.m, projV2onN.x).v3;
     let v4_normalX = headOnCollision(b1.m, projV1onN.x, b2.m, projV2onN.x).v4;

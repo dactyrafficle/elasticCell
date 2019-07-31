@@ -80,19 +80,19 @@ function recalcMomentumAfterCollision(b1, b2) {
     let orthoV1onN = ortho12(b1.vx, b1.vy, N.x, N.y);
     let orthoV2onN = ortho12(b2.vx, b2.vy, N.x, N.y);
 		
-		// 5. combine results from step 3 and 4
+    // 5. combine results from step 3 and 4
 		
-		v3x = v3_normalX + orthoV1onN.x;
-		v3y = v3_normalY + orthoV1onN.y;
+    v3x = v3_normalX + orthoV1onN.x;
+    v3y = v3_normalY + orthoV1onN.y;
 		
-		v4x = v4_normalX + orthoV2onN.x;
-		v4y = v4_normalY + orthoV2onN.y;
+    v4x = v4_normalX + orthoV2onN.x;
+    v4y = v4_normalY + orthoV2onN.y;
 		
-		b1.vx = v3x;
-		b1.vy = v3y;
+    b1.vx = v3x;
+    b1.vy = v3y;
 		
-		b2.vx = v4x;
-		b2.vy = v4y;
+    b2.vx = v4x;
+    b2.vy = v4y;
   
 	}
 }

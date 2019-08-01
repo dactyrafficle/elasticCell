@@ -44,7 +44,9 @@ Ball.prototype.update = function() {
 Ball.prototype.display = function() {
   noStroke();
   fill(255, 180, 0, 120);
-  ellipse(this.x, this.y, this.r*2, this.r*2);
+  arc(this.x, this.y, this.r*2, this.r*2, 0, PI);
+  fill(100, 100, 250, 200);
+  arc(this.x, this.y, this.r*2, this.r*2, PI, 0); 
 }
 
 Ball.prototype.collideWithEdge = function() {

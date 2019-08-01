@@ -80,6 +80,19 @@ function recalcMomentumAfterCollision(b1, b2) {
     let orthoV1onN = ortho12(b1.vx, b1.vy, N.x, N.y);
     let orthoV2onN = ortho12(b2.vx, b2.vy, N.x, N.y);
 		
+    // 4b. the size of the orthogonal vector will determine how much spin to give - but i also need to analyze i think the angle between the orthogonal and the normal to establish what direction it will be in, bc right now, it's just arbitrary
+		
+    // b1 adds angular momentum to b2
+    let v1_ortho_mag = Math.sqrt(orthoV1onN.x*orthoV1onN.x+orthoV1onN.y*orthoV1onN.y);
+    let b1_angular_momentum = b1.m * v1_ortho_mag;
+		
+    // b2 adds angular momentum to b1		
+    let v2_ortho_mag = Math.sqrt(orthoV2onN.x*orthoV2onN.x+orthoV2onN.y*orthoV2onN.y);
+    let b2_angular_momentum = b2.m * v2_ortho_mag;
+		
+    b1.w += b2_angular_momentum/b1.m;
+    b2.w -= b1_angular_momentum/b2.m;
+
     // 5. combine results from step 3 and 4
 		
     v3x = v3_normalX + orthoV1onN.x;

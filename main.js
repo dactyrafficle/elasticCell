@@ -34,19 +34,30 @@ function Ball(x, y, r) {
   this.m = 2*PI*r*r;
   this.vx = random(-3, 3);
   this.vy = random(-3, 3);
+  this.w = 0; // angular speed
+  this.wmax = 5;
+  this.w0 = 0;
 }
 
 Ball.prototype.update = function() {
   this.x += this.vx;
   this.y += this.vy;
+  if (this.w > this.wmax) {
+    this.w = this.wmax;
+  }
+  if (this.w < -this.wmax) {
+    this.w = -this.wmax;
+  }
+  this.w0 += this.w/180*PI;
 }
 
 Ball.prototype.display = function() {
   noStroke();
-  fill(255, 180, 0, 120);
-  arc(this.x, this.y, this.r*2, this.r*2, 0, PI);
-  fill(100, 100, 250, 200);
-  arc(this.x, this.y, this.r*2, this.r*2, PI, 0); 
+	fill(100, 100, 250, 200);
+	arc(this.x, this.y, this.r*2, this.r*2, this.w0+PI, this.w0); 
+	fill(255, 180, 0, 120);
+	arc(this.x, this.y, this.r*2, this.r*2, this.w0, this.w0+PI); 
+
 }
 
 Ball.prototype.collideWithEdge = function() {

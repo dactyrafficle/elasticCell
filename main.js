@@ -9,9 +9,19 @@ function setup() {
       let r = random(12, 21);
       let x = (width/n)*(i+0.5);
       let y = (height/n)*(j+0.5);	
-      balls.push(new Ball(x, y, r));
+      let vx = random(-3, 3);
+      let vy = random(-3, 3);
+      //balls.push(new Ball(x, y, vx, vy, r));
     }
   }
+	
+	
+	let r1 = 30;
+	let r2 = 30;
+	let v = 7;
+	balls.push(new Ball(width/2, height/2, 0, 0, r1));
+	balls.push(new Ball(width/2+(r1+r2)*0.9, height-r2, 0, -v, r2));
+	
 }
 
 function draw() {
@@ -27,13 +37,13 @@ function draw() {
   }
 }
 
-function Ball(x, y, r) {
+function Ball(x, y, vx, vy, r) {
   this.r = r;
   this.x = x;
   this.y = y;
   this.m = 2*PI*r*r;
-  this.vx = random(-3, 3);
-  this.vy = random(-3, 3);
+  this.vx = vx;
+  this.vy = vy;
   this.w = 0; // angular speed
   this.wmax = 5;
   this.w0 = 0;

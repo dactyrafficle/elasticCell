@@ -40,13 +40,13 @@ function recalcMomentumAfterCollision(b1, b2) {
   } else {
 
     // 1. get the normal vector, N, that represents the line of collision
-    let N = {
-      'x': b1.x - b2.x,
-      'y': b1.y - b2.y,
-      'mag': function() {
-        return Math.sqrt(this.x*this.x + this.y*this.y);
-      }
-    }
+    let N = new Vector(b1.x-b2.x, b1.y-b2.y);
+		
+    let N1 = new Vector(b1.x - b2.x, b1.y - b2.y);
+		console.log(N1.theta());
+		
+    let N2 = new Vector(b2.x - b1.x, b2.y - b1.y);
+		console.log(N2.theta());
 
     // 1b. reposition b1 so that it is exactly rho units away from b2 in the direction of the line of collision, N
     b1.x = b2.x + (N.x/N.mag())*rho;
@@ -77,21 +77,49 @@ function recalcMomentumAfterCollision(b1, b2) {
     // 4. calculate the orthogonal components
 		
     // each returns an object
-    let orthoV1onN = ortho12(b1.vx, b1.vy, N.x, N.y);
-    let orthoV2onN = ortho12(b2.vx, b2.vy, N.x, N.y);
+    let aa = ortho12(b1.vx, b1.vy, N.x, N.y);
+		let orthoV1onN = new Vector(aa.x, aa.y);
+		console.log(orthoV1onN.theta());
 		
+    let bb = ortho12(b2.vx, b2.vy, N.x, N.y);
+		let orthoV2onN = new Vector(bb.x, bb.y);
+		console.log(orthoV2onN.theta());
+		
+		/* calc the spin */
+
     // 4b. the size of the orthogonal vector will determine how much spin to give - but i also need to analyze i think the angle between the orthogonal and the normal to establish what direction it will be in, bc right now, it's just arbitrary
 		
+		// if the orthogonal component has a smaller angle than the normal, it imparts a counter clockwise spin on the other ball, else clockwise
+		
+		let spin2 = (function() {
+			if (N1.theta() > orthoV1onN.theta()) {
+			  return -1;
+			} else {
+				return 1;
+			}
+		})();
+		
+		let spin1 = (function() {
+			if (N2.theta() > orthoV2onN.theta()) {
+			  return -1;
+			} else {
+				return 1;
+			}
+		})();
+		
     // b1 adds angular momentum to b2
-    let v1_ortho_mag = Math.sqrt(orthoV1onN.x*orthoV1onN.x+orthoV1onN.y*orthoV1onN.y);
+    let v1_ortho_mag = orthoV1onN.mag();
     let b1_angular_momentum = b1.m * v1_ortho_mag;
 		
     // b2 adds angular momentum to b1		
-    let v2_ortho_mag = Math.sqrt(orthoV2onN.x*orthoV2onN.x+orthoV2onN.y*orthoV2onN.y);
+    let v2_ortho_mag = orthoV2onN.mag();
     let b2_angular_momentum = b2.m * v2_ortho_mag;
 		
-    b1.w += b2_angular_momentum/b1.m;
-    b2.w -= b1_angular_momentum/b2.m;
+    b1.w += spin1*b2_angular_momentum/b1.m;
+    b2.w += spin2*b1_angular_momentum/b2.m;		
+
+		
+		
 
     // 5. combine results from step 3 and 4
 		
@@ -106,6 +134,30 @@ function recalcMomentumAfterCollision(b1, b2) {
 		
     b2.vx = v4x;
     b2.vy = v4y;
+		
+		//noLoop();
   
   }
+}
+
+
+function Vector(x, y) {
+  this.x = x;
+  this.y = y;
+	this.theta = function() {
+		let a = Math.atan2(-this.y, this.x)*180/PI;
+		if (a < 0) {
+			a += 360;
+		}
+		return a;
+	}
+  this.mag = function() {
+    return Math.sqrt(this.x*this.x+this.y*this.y);
+  };
+  this.normalize = function() {
+    let m = this.mag();
+    this.x = this.x / m;
+    this.y = this.y / m;
+    console.log('x: ' + this.x + ', y: ' + this.y);
+  };
 }

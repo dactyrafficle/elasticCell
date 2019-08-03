@@ -15,12 +15,17 @@ function setup() {
     }
   }
 	
+  let v = 7;
 	
-	let r1 = 30;
-	let r2 = 30;
-	let v = 7;
-	balls.push(new Ball(width/2, height/2, 0, 0, r1));
-	balls.push(new Ball(width/2+(r1+r2)*0.9, height-r2, 0, -v, r2));
+  let r1 = 30;
+  let r2 = 30;
+  balls.push(new Ball(width/2, height/2, 0, 0, r1));
+  balls.push(new Ball(width/2+(r1+r2)*0.9, height-r2, 0, -v, r2));
+	
+  let r3 = 18;
+  let r4 = 18;
+  balls.push(new Ball(0+r3, height*1/5, v*0.7, 0, r3));
+  balls.push(new Ball(width-r4, height*1/5+(r3+r4)*0.9, -v*0.7, 0, r4));
 	
 }
 
@@ -47,6 +52,7 @@ function Ball(x, y, vx, vy, r) {
   this.w = 0; // angular speed
   this.wmax = 5;
   this.w0 = 0;
+	this.a = 190;
 }
 
 Ball.prototype.update = function() {
@@ -62,12 +68,23 @@ Ball.prototype.update = function() {
 }
 
 Ball.prototype.display = function() {
-  noStroke();
-	fill(100, 100, 250, 200);
-	arc(this.x, this.y, this.r*2, this.r*2, this.w0+PI, this.w0); 
-	fill(255, 180, 0, 120);
-	arc(this.x, this.y, this.r*2, this.r*2, this.w0, this.w0+PI); 
-
+	
+  push();
+	
+    noStroke();
+    translate(this.x, this.y);
+    rotate(this.w0);
+    fill(100, 145, 240, this.a);
+    arc(0, 0, this.r*2, this.r*2, 0+PI, 0);
+    fill(255, 205, 255, this.a);
+    arc(0, 0, this.r*2, this.r*2, 0, 0+PI);
+		
+    strokeWeight(this.r/4);
+    stroke(100, 145, 240, this.a);
+    point(this.r*0.7*Math.sin(0*PI/180), this.r*0.7*Math.cos(0*PI/180));
+	
+  pop();
+	
 }
 
 Ball.prototype.collideWithEdge = function() {
